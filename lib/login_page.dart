@@ -137,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                             });
                           },
                           child: AnimatedContainer(
-                            duration: Duration(milliseconds: 500),
+                            duration: Duration(milliseconds: 200),
                             curve: Curves.easeInOut,
                             height: buttonheight,
                             width: buttonwidth,

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -16,55 +17,86 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //final PostController postController = Get.put(PostController());
   final Dio dio = Dio();
   List<dynamic> reviews = [];
   String error = '';
   bool isLoading = false;
-  List<Post> _posts = [];
+  var posts = <Post>[].obs;
 
+  List<String> profile = [
+    'assets/images/profile1.jpg',
+    'assets/images/profile2.jpg',
+    'assets/images/profile3.jpg',
+    'assets/images/profile4.jpg',
+  ];
+  List<String> images =[
+    'assets/images/image2.jpg',
+    'assets/images/image3.jpg',
+    'assets/images/image4.jpg',
+    'assets/images/image5.jpg',
+  ];
 
- @override
-  void initState() {
+   
+  @override
+  void initState(){
     super.initState();
-    fetchPosts();
+    fetchPostsFromAllAPIs();
   }
 
+  Future<void> fetchPostsFromAllAPIs() async {
+    final List<String> apiEndpoints = [
+      'http://uat.redprix.com/api/posts/1323',
+      'http://uat.redprix.com/api/posts/1305',
+      'http://uat.redprix.com/api/posts/1340',
+      'http://uat.redprix.com/api/posts/1202',
+      // Add more API endpoints as needed
+    ];
 
-  Future<void> fetchPosts() async {
+    for (final String apiEndpoint in apiEndpoints) {
+      await fetchPosts(apiEndpoint);
+    }
+  }
+
+  Future<void> fetchPosts(String apiEndpoint) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString('auth_token')??'';
-      print('$token');
-      Response response = await dio.get('https://uat.redprix.com/api/customers/posts',
-          options: Options(
+      final Dio dio = Dio();
+      final response = await dio.get(apiEndpoint,
+        options: Options(
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
             responseType:ResponseType.json,
             headers: {
-              'Authorization': 'Bearer $token',
+              //'Authorization': 'Bearer $token',
+              HttpHeaders.authorizationHeader : 'Bearer $token',
               'Accept': "application/json"  
             }
           ),
-        );
-        print(response.statusCode);
-        print(response.data);
-        if(response.statusCode == 200){
-          print("-- $response");
-        }
-        else if(response.statusCode == 401){
-          print("responsecode is 401");
-        }
+      );
 
+      if (response.statusCode == 200) {
+        final dynamic responseData = response.data['data'];
+
+        if (responseData is List) {
+          // If responseData is a List, parse each item in the list
+          final List<Post> fetchedPosts = responseData.map((post) => Post.fromJson(post)).toList();
+          posts.addAll(fetchedPosts);
+        } else if (responseData is Map<String, dynamic>) {
+          // If responseData is an object, parse the single item
+          final Post singlePost = Post.fromJson(responseData);
+          posts.add(singlePost);
+        }
+      } else {
+        // Handle error
+        print('Error fetching posts from $apiEndpoint');
+      }
     } catch (e) {
-      setState(() {
-        error = 'Failed to fetch posts: $e';
-        isLoading = false;
-      });
-      //print("---- ${e.toString()}");
-
+      // Handle Dio error
+      print('Dio error: $e');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -147,12 +179,73 @@ class _HomePageState extends State<HomePage> {
                 ],
               )),
         ),
-    body: ListView.builder(
-      itemCount: _posts.length,
-      itemBuilder: ((context, index) {
-        return PostCard(post: _posts[index]);
-      })
-     ),
+  body: Obx(
+        () => ListView.builder(
+          padding: EdgeInsets.only(top: 10, bottom: 5),
+          itemCount: posts.length,
+          itemBuilder: (context, index) {
+           final post = posts[index];
+            return Container(
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.only(top: 10,bottom: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+              ),
+               height: 400,
+               width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: AssetImage(
+                            profile[index],
+                          ),
+                          radius: 20,
+                        ),
+                        SizedBox(width: 10,),
+                        Text(post.userName, style: TextStyle(fontWeight: FontWeight.w700),),
+                      ],
+                    ),
+                    Container(
+                      height: 200,
+                      width: double.infinity,
+                      child:Image.asset(
+                      images[index],
+                      fit: BoxFit.cover,
+                    ),
+                    ),
+                    
+                    SizedBox(width: 10,),
+                    Text(post.title, style: TextStyle(color: Colors.grey[700]),),
+                    SizedBox(width: 5,),
+                    Text(post.description,style: TextStyle(color: Colors.grey[700]),),
+                    Wrap(
+                      //mainAxisAlignment: MainAxisAlignment.start,
+                      spacing: 2.5,
+                      runSpacing: 5,
+                      children: [
+                       Icon(Icons.thumb_up_alt_outlined),
+                       SizedBox(width: 10,),
+                       Text(post.likesCount),
+                       SizedBox(width: 110,),
+                       Icon(Icons.comment_sharp),
+                       SizedBox(width: 10,),
+                       Text(post.commentsCount),
+                       SizedBox(width: 110,),
+                       Icon(Icons.share_outlined),
+                       SizedBox(width: 10,),
+                       Text(post.sharCount),
+                      ],
+                    ),
+                  ],
+                ),
+            ); 
+          },
+        ),
+      ),
     );
   }
 }
