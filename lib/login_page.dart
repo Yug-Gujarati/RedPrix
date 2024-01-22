@@ -16,8 +16,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   LoginPageController controller = Get.put(LoginPageController());
-  double buttonwidth = 200;
-  double buttonheight = 45;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Expanded(
-            flex: 7,
+            flex: 8,
             child: Container(
                 height: 400,
                 padding: const EdgeInsets.fromLTRB(25.0, 100.0, 25.0, 20.0),
@@ -43,158 +42,188 @@ class _LoginPageState extends State<LoginPage> {
                     )),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 350,
-                        height: 70,
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter email';
-                            }
-                            return null;
-                          },
-                          controller: controller.emailController.value,
-                          decoration: InputDecoration(
-                            label: const Text('Email'),
-                            hintText: 'Email',
-                            hintStyle: const TextStyle(
-                              color: Colors.black26,
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12, 
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 350,
+                          height: 70,
+                          child: TextFormField(
+                            controller: controller.emailController.value,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter email';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              label: const Text('Email'),
+                              hintText: 'Email',
+                              hintStyle: const TextStyle(
+                                color: Colors.black26,
                               ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color:
+                                      _formKey.currentState?.validate() == false
+                                          ? Colors.red
+                                          : Colors.black12,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              borderRadius: BorderRadius.circular(10),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color:
+                                      _formKey.currentState?.validate() == false
+                                          ? Colors.red
+                                          : Colors.black12,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              errorText:
+                                  _formKey.currentState?.validate() == false
+                                      ? 'Please enter email'
+                                      : null,
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 25.0,
-                      ),
-                      // email
-                      SizedBox(
-                        width: 350,
-                        height: 70,
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Password';
-                            }
-                            return null;
-                          },
-                          controller: controller.passwordController.value,
-                          decoration: InputDecoration(
-                            label: const Text('Password'),
-                            hintText: 'Enter Password',
-                            hintStyle: const TextStyle(
-                              color: Colors.black26,
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12, // Default border color
+                        SizedBox(
+                          height: 25.0,
+                        ),
+                        // email
+                        SizedBox(
+                          width: 350,
+                          height: 70,
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter Password';
+                              }
+                              return null;
+                            },
+                            controller: controller.passwordController.value,
+                            decoration: InputDecoration(
+                              label: const Text('Password'),
+                              hintText: 'Enter Password',
+                              hintStyle: const TextStyle(
+                                color: Colors.black26,
                               ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12, // Default border color
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color:
+                                      _formKey.currentState?.validate() == false
+                                          ? Colors.red
+                                          : Colors.black12,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              borderRadius: BorderRadius.circular(10),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color:
+                                      _formKey.currentState?.validate() == false
+                                          ? Colors.red
+                                          : Colors.black12,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              errorText:
+                                  _formKey.currentState?.validate() == false
+                                      ? 'Please enter Password'
+                                      : null,
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 100,
-                        height: 5,
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Text(
-                          "Forgot Password?",
-                          style: TextStyle(color: Colors.blue[400]),
+                        SizedBox(
+                          width: 100,
+                          height: 5,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      InkWell(
+                        InkWell(
+                          onTap: () {},
+                          child: Text(
+                            "Forgot Password?",
+                            style: TextStyle(color: Colors.blue[400]),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        InkWell(
                           onTap: () {
-                            controller.login(); 
-                            setState((){
-                              buttonwidth = 150;
-                              buttonheight= 35;
-                            });
+                            if (_formKey.currentState?.validate() == true) {
+                              controller.login();
+                            }
                           },
-                          child: AnimatedContainer(
-                            duration: Duration(milliseconds: 200),
-                            curve: Curves.easeInOut,
-                            height: buttonheight,
-                            width: buttonwidth,
+                          child: Container(
+                            height: 45,
+                            width: 200,
                             decoration: BoxDecoration(
                                 color: Colors.red,
                                 borderRadius: BorderRadius.circular(5)),
                             child: const Center(
                               child: Text(
                                 "Login",
-                                style: TextStyle(color: Colors.white, fontSize: 20),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
                               ),
                             ),
                           ),
                         ),
-                      
-                      
-                  
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Alrady member?",
-                            style: TextStyle(color: Colors.grey[600]),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context)=> RegistrationPage(),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              "Sign Up",
-                              style: TextStyle(
-                                  color: Colors.blue[400],
-                                  fontWeight: FontWeight.bold),
+
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Alrady member?",
+                              style: TextStyle(color: Colors.grey[600]),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Image.asset("assets/images/google.png", height: 38, width: 38,),
-                          Icon(FontAwesomeIcons.facebook, color: Colors.blue),
-                          Icon(Bootstrap.apple),
-                        ],
-                      )
-                    ],
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => RegistrationPage(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "Sign Up",
+                                style: TextStyle(
+                                    color: Colors.blue[400],
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Image.asset(
+                              "assets/images/google.png",
+                              height: 38,
+                              width: 38,
+                            ),
+                            Icon(FontAwesomeIcons.facebook, color: Colors.blue),
+                            Icon(Bootstrap.apple),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 )),
           )

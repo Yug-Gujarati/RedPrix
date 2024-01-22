@@ -19,27 +19,30 @@ class CustomScaffold extends StatelessWidget {
             fit: BoxFit.cover,
             width: double.infinity,
           ),
-          const Padding(
-             padding: EdgeInsets.only(left: 20, top: 90),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Login",
-                       style: TextStyle(color: Colors.yellow, fontSize: 26,),
-                      ),
+          Positioned(
+            top: 50,
+            child: const Padding(
+               padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Text(
-                        "Welcome Back to Redpix", 
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
-                      ),
-                      Text(
-                        "Login to Connect with app", 
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                    ],
+                        "Login",
+                         style: TextStyle(color: Colors.yellow, fontSize: 26,),
+                        ),
+                        Text(
+                          "Welcome Back to Redpix", 
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
+                        ),
+                        Text(
+                          "Login to Connect with app", 
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+          ),
           SafeArea(
             child: child!,
           ),

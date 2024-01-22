@@ -1,8 +1,8 @@
+import 'package:api/verification_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationRequest {
   final String name;
@@ -71,10 +71,17 @@ class RegistrationController extends GetxController{
         data: registrationRequest.toJson(),
         options: options,
       );
-    if (response.statusCode == 201) {
-        Get.to(()=>HomePage(token: '',));
-    } else if (response.statusCode == 422) {
+      print(response.statusCode);
+      Map<String, dynamic> responseData = response.data;
+      if (response.statusCode == 201) {
+         String otp = responseData['data']['email_otp'];
+         Get.to(()=>verificationPage(), );
+         Get.snackbar('OTP', otp, backgroundColor:Colors.white, duration: Duration(seconds: 50), );
+      } else if (response.statusCode == 422) {
         Get.snackbar("Error", "The email has already been taken.",backgroundColor: Colors.white);
+      }
+      else if(passwordController.value.text != confirmPasswordController.value.text){
+        Get.snackbar("Error", "Password and CongirmPassword is not matchning");
       }
     } catch (error) {
        Get.snackbar("Error", "The email has already been taken",backgroundColor: Colors.white);

@@ -28,7 +28,7 @@ class LoginPageController extends GetxController{
       );
       Map<String, dynamic> responseData = response.data;
      // var da = jsonDecode(response.data);
-      print(response.statusCode);
+    
       //dprint(responseData);
       if(response.statusCode == 200){
         String token = responseData['data']['authorization'];
@@ -37,11 +37,11 @@ class LoginPageController extends GetxController{
         Get.to(() => HomePage(token: token,));
       }else{
         loginStatus.value = false;
-        Get.snackbar("Error", "Wrong email or password", backgroundColor: Colors.white);
+        Get.snackbar("Error", "Wrong email or password", backgroundColor: Colors.white,duration: Duration(seconds: 4));
       }
     }catch(e){
         loginStatus.value = false;
-        Get.snackbar("Error", "Wrong email or password", backgroundColor: Colors.white);
+        Get.snackbar("Error", "Wrong email or password", backgroundColor: Colors.white, duration: Duration(seconds: 4));
     }
   }
 }
