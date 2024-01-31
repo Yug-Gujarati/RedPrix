@@ -28,14 +28,14 @@ class verificationController extends GetxController{
       Map<String, dynamic> responseData = response.data;
       print(responseData);
       if(response.statusCode == 200){
-        Get.to(()=>LoginPage());
-        Get.snackbar("message", responseData['data']['message'],backgroundColor: Colors.white,duration: Duration(seconds: 4));
+        Get.to(()=>const LoginPage());
+        Get.snackbar("message", responseData['data']['message'],backgroundColor: Colors.white,duration: const Duration(seconds: 4));
       }
       else if(response.statusCode == 422){
-        Get.snackbar("message", responseData['data']['message'], backgroundColor: Colors.white,duration: Duration(seconds: 4));
+        Get.snackbar("message", responseData['data']['message'], backgroundColor: Colors.white,duration: const Duration(seconds: 4));
       }
     }catch(e){
-      Get.snackbar("error", "OTP or Email id wrong", backgroundColor: Colors.white,duration: Duration(seconds: 4));
+      Get.snackbar("error", "OTP or Email id wrong", backgroundColor: Colors.white,duration: const Duration(seconds: 4));
     }
   }
 }

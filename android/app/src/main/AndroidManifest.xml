@@ -1,7 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.your_app_package_name">
     <uses-permission android:name="android.permission.INTERNET" />
-    
+<queries>
+    <intent>
+      <action android:name="android.intent.action.SENDTO" />
+      <data android:scheme="mailto" />
+    </intent>
+  </queries>
     <application
         android:label="api"
         android:name="${applicationName}"

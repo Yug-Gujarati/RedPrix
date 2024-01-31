@@ -19,9 +19,9 @@ class CustomScaffold extends StatelessWidget {
             fit: BoxFit.cover,
             width: double.infinity,
           ),
-          Positioned(
+          const Positioned(
             top: 50,
-            child: const Padding(
+            child: Padding(
                padding: EdgeInsets.symmetric(horizontal: 5),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

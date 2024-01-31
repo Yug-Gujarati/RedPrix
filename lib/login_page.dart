@@ -8,7 +8,7 @@ import 'component/login_controller.dart';
 import 'registration_page.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red),
+                                borderSide: const BorderSide(color: Colors.red),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               errorText:
@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 25.0,
                         ),
                         // email
@@ -133,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red),
+                                borderSide: const BorderSide(color: Colors.red),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               errorText:
@@ -143,38 +143,42 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 100,
                           height: 5,
                         ),
-                        InkWell(
-                          onTap: () {},
+                        TextButton(
+                          onPressed: () {},
                           child: Text(
                             "Forgot Password?",
                             style: TextStyle(color: Colors.blue[400]),
                           ),
                         ),
+
                         const SizedBox(
                           height: 10,
                         ),
-                        InkWell(
-                          onTap: () {
+                        ElevatedButton(
+                          onPressed: () {
                             if (_formKey.currentState?.validate() == true) {
                               controller.login();
                             }
                           },
-                          child: Container(
-                            height: 45,
-                            width: 200,
-                            decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(5)),
-                            child: const Center(
-                              child: Text(
-                                "Login",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
-                              ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            elevation: 10,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 60,
+                              vertical: 10,
+                            ),
+                            child: Text(
+                              "Login",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
                             ),
                           ),
                         ),
@@ -189,12 +193,13 @@ class _LoginPageState extends State<LoginPage> {
                               "Alrady member?",
                               style: TextStyle(color: Colors.grey[600]),
                             ),
-                            InkWell(
-                              onTap: () {
+                            TextButton(
+                              onPressed: () {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => RegistrationPage(),
+                                    builder: (context) =>
+                                        const RegistrationPage(),
                                   ),
                                 );
                               },
@@ -218,8 +223,9 @@ class _LoginPageState extends State<LoginPage> {
                               height: 38,
                               width: 38,
                             ),
-                            Icon(FontAwesomeIcons.facebook, color: Colors.blue),
-                            Icon(Bootstrap.apple),
+                            const Icon(FontAwesomeIcons.facebook,
+                                color: Colors.blue),
+                            const Icon(Bootstrap.apple),
                           ],
                         )
                       ],

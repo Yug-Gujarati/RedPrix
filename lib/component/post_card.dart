@@ -11,7 +11,6 @@ class Post {
   final String commentsCount;
   final String createdAt;
   final String sharCount;
-
   Post({
     required this.id,
     required this.title,
